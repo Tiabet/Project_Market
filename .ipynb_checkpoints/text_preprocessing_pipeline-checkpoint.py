@@ -5,6 +5,7 @@
 
 # In[ ]:
 
+#사용법 : python text_preprocessing_pipeline.py input.tsv
 
 import unicodedata
 import pandas as pd
