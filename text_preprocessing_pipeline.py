@@ -3,9 +3,10 @@
 
 # <a href="https://colab.research.google.com/github/Tiabet/Project_Market/blob/master/text_preprocessing_pipeline.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# In[ ]:
 
 #사용법 : python text_preprocessing_pipeline.py input.tsv
+#결과가 input 파일 이름_preprocessed.tsv 형식으로 저장됩니다.
+#설치 필요 패키지 : Hanspell (네이버 맞춤법 검사기) , Scikit-learn (싸이킷런)
 
 import unicodedata
 import pandas as pd
@@ -22,21 +23,6 @@ def normalize_unicode(text):
 def correct_spelling(text):
     spelled_sent = spell_checker.check(text)
     return spelled_sent.checked
-
-#def apply_regex(text):
-#    only_BMP_pattern = re.compile("["
-#        u"\U00010000-\U0010FFFF"  #BMP characters 이외
-#                           "]+", flags=re.UNICODE)
-#    text = only_BMP_pattern.sub(r'', text)
-#    text = re.sub(r'[ㄱ-ㅎㅏ-ㅣ0-9]+', '', text)
-#    text = re.sub('ᄒ+', '', text)
-#    text = re.sub('[ෆ⃛❤❤❤♥♡】૮₍˶•⑅₎ა]', '', text)
-#    text = re.sub('[-=+,#/\?^.@*\";※~ㆍ!』‘|\<\>\[\]\_`\'…》\”\“\’·]', ' ', text)
-#    text = re.sub(r':[)D]|:[(]','', text)
-#    text = re.sub(r':','', text)
-#    text = re.sub(r'[a-zA-Z]{1,2}', '', text)
-#    text = re.sub(r'\s{2,}|\t', ' ', text)
-#    return text
 
 def apply_regex(text): 
     text = re.sub(r'[^ 가-힣a-zA-Z\(\):]','',text)
@@ -68,7 +54,6 @@ class ApplyRegexTransformer(BaseEstimator, TransformerMixin):
 def preprocess_file(input_filename, output_filename):
     df = pd.read_csv(input_filename, sep='\t')
     
-
     preprocessing_pipeline = Pipeline([
         ('normalize_unicode', NormalizeUnicodeTransformer()),
         ('correct_spelling', CorrectSpellingTransformer()),
