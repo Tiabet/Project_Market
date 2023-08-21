@@ -19,8 +19,8 @@ def correct_spelling(text):
     try:
         spelled_sent = spell_checker.check(text)
         return spelled_sent.checked
-    except ET.ParseError as e:
-        print("XML Parse Error for text:", text)
+    except Exception  as e:
+        print("text", text)
         print("Error:", e)
         return text
 
