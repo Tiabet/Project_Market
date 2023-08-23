@@ -2,7 +2,6 @@
 #결과가 input 파일 이름_preprocessed.tsv 형식으로 저장됩니다.
 
 import unicodedata
-import xml.etree.ElementTree as ET
 import pandas as pd
 from hanspell import spell_checker
 import re
@@ -57,6 +56,7 @@ class ApplyRegexTransformer(BaseEstimator, TransformerMixin):
 def preprocess_file(input_filename, output_filename):
     df = pd.read_csv(input_filename, sep='\t')
     print("{}의 리뷰를 전처리 중입니다...".format(input_filename))
+    print("리뷰 개수 : {}".format(len(df['review'])))
     
     preprocessing_pipeline = Pipeline([
         ('normalize_unicode', NormalizeUnicodeTransformer()),
