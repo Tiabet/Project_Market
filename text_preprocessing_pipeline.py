@@ -27,6 +27,8 @@ def apply_regex(text):
     text = re.sub(r'[^ 가-힣a-zA-Z\(\):]','',text)
     text = re.sub(r'[a-zA-Z]{1,2}', '', text)
     text = re.sub(r':\s?[\)D]|:\s?\(', '', text)
+    text = re.sub(r'\b(\w+)(?: \1\b)+', r'\1', text)
+    text = re.sub(r'\s+', ' ', text)
     return text
 
 class NormalizeUnicodeTransformer(BaseEstimator, TransformerMixin):
