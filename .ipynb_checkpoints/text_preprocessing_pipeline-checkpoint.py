@@ -53,9 +53,10 @@ class ApplyRegexTransformer(BaseEstimator, TransformerMixin):
         print("Applying Regex")
         return X.apply(apply_regex)
 
-def preprocess_file(input_filename, output_filename):
+def preprocess_file(input_filename, output_folder):
     df = pd.read_csv(input_filename, sep='\t')
-    print("{}의 리뷰를 전처리 중입니다...".format(input_filename))
+    input_folder, input_file = input_filename.split('\\')
+    print("{}의 리뷰를 전처리 중입니다...".format(input_file))
     print("리뷰 개수 : {}".format(len(df['review'])))
     
     preprocessing_pipeline = Pipeline([
@@ -66,17 +67,26 @@ def preprocess_file(input_filename, output_filename):
 
     df_preprocessed = preprocessing_pipeline.fit_transform(df['review'])
     df['review'] = df_preprocessed
-    df.to_csv(output_filename, sep='\t', index=False)
+    
+    base_filename, extension = os.path.splitext(input_file)
+    output_filename = base_filename + '_preprocessed' + extension
+    output_file = os.path.join(output_folder, output_filename)
+    df.to_csv(output_file, sep='\t', index=False)
     print("저장이 완료되었습니다.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="텍스트 데이터 전처리(띄어쓰기, 불필요언어 제거 등)")
-    parser.add_argument("input_file", help="전처리할 파일명을 입력하세요.")
+    parser.add_argument("input_folder", help="전처리할 파일들이 있는 폴더명을 입력하세요.")
     
     args = parser.parse_args()
     
-    input_filename = args.input_file
-    base_filename, extension = os.path.splitext(input_filename)
-    output_filename = base_filename + '_preprocessed' + extension
+    input_folder = args.input_folder
+    output_folder = input_folder+"_preprocessed"
     
-    preprocess_file(input_filename, output_filename)
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    
+    for filename in os.listdir(input_folder):
+        if filename.endswith(".tsv"):
+            input_filename = os.path.join(input_folder, filename)
+            preprocess_file(input_filename, output_folder)
