@@ -6,3 +6,5 @@
 2. Facet-Analysis without noun-phrases
 3. Text 전처리 파이프라인
 4. 리뷰 데이터 요약 서비스
+
+py파일들로 번역 필요
