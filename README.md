@@ -4,5 +4,5 @@
 
 1. KoBERT 사용하여 긍정/부정 리뷰 분류
 2. Facet-Analysis without noun-phrases
-3. Text 전처리 파이프라인
+3. 텍스트 전처리 파이프라인
 4. 리뷰 데이터 요약 서비스
